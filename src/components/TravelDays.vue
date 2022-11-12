@@ -4,13 +4,13 @@ import { ref, watch } from "vue";
 const emit = defineEmits(["update:TravelDays"]);
 
 const days = [
-  "Sunday",
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-  "Friday",
-  "Saturday",
+  "zondag",
+  "maandag",
+  "dinsdag",
+  "woensdag",
+  "donderdag",
+  "vrijdag",
+  "zaterdag",
 ];
 const selected = ref([]);
 
@@ -21,7 +21,7 @@ watch(selected, () => {
 
 <template>
   <fieldset>
-    <legend>Default travel days</legend>
+    <legend>Kantoordagen</legend>
     <div class="form-check" v-for="(day, index) in days" :key="day">
       <input
         class="form-check-input"

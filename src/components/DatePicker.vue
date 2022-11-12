@@ -1,6 +1,7 @@
 <script setup>
 import { onMounted, ref, watch } from "vue";
 import flatpickr from "flatpickr";
+import { Dutch } from "flatpickr/dist/l10n/nl";
 import { getDay } from "date-fns";
 
 const props = defineProps({ range: Array, travelDays: Array });
@@ -10,6 +11,7 @@ const options = {
   mode: "multiple",
   inline: true,
   defaultDate: [],
+  locale: Dutch,
   onChange(selectedDates) {
     emit("update:travelDates", selectedDates);
   },
@@ -33,15 +35,19 @@ const setDays = () => {
   flatpickrInstance = flatpickr(picker.value, opts);
 };
 
-onMounted(setDays);
-
 watch(() => props.range, setDays);
 watch(() => props.travelDays, setDays);
+
+onMounted(setDays);
 </script>
 
 <template>
-  <div>
-    <span ref="picker"></span>
+  <span ref="picker"></span>
+  <div class="mt-3">
+    <span class="form-text"
+      >Tip! Je kunt extra dagen selecteren of dagen waarop je niet ging,
+      deselecteren.</span
+    >
   </div>
 </template>
 

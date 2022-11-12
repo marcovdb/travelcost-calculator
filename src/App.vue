@@ -1,14 +1,17 @@
 <script setup>
 import { ref, computed } from "vue";
 import { subMonths, format, eachDayOfInterval } from "date-fns";
+import { nl } from "date-fns/locale";
 import * as Papa from "papaparse";
 import DatePicker from "./components/DatePicker.vue";
 import TravelDays from "./components/TravelDays.vue";
 
 const allowance = ref(0.19);
 const distance = ref(0);
-const end = ref(format(new Date(), "yyyy-MM-dd"));
-const start = ref(format(subMonths(new Date(), 1), "yyyy-MM-dd"));
+const end = ref(format(new Date(), "yyyy-MM-dd", { locale: nl }));
+const start = ref(
+  format(subMonths(new Date(), 1), "yyyy-MM-dd", { locale: nl })
+);
 const travelDates = ref([]);
 const travelDays = ref([]);
 
@@ -27,7 +30,9 @@ const setTravelDays = (payload) => {
 };
 
 const setTravelDates = (payload) => {
-  travelDates.value = payload.map((date) => format(date, "PPPP"));
+  travelDates.value = payload.map((date) =>
+    format(date, "PPPP", { locale: nl })
+  );
 };
 
 const round = (input) => Math.round(input * 100) / 100;
@@ -57,12 +62,13 @@ const exportToCsv = () => {
 
 <template>
   <div class="container py-4 px-3 mx-auto">
-    <h1>Travel cost calculator</h1>
+    <h1>Reiskostendeclaratiegenerator</h1>
+    <p class="lead">Geen zin om handmatig een Excel te maken? Ik ook niet!</p>
     <form autocomplete="off">
       <div class="row">
         <div class="col-lg-4">
           <div class="mb-3">
-            <label for="startdate" class="form-label">Start date</label>
+            <label for="startdate" class="form-label">Startdatum</label>
             <input
               id="startdate"
               class="form-control"
@@ -71,7 +77,7 @@ const exportToCsv = () => {
             />
           </div>
           <div class="mb-3">
-            <label for="enddate" class="form-label">End date</label>
+            <label for="enddate" class="form-label">Einddatum</label>
             <input
               id="enddate"
               class="form-control"
@@ -85,22 +91,34 @@ const exportToCsv = () => {
               :travel-days="travelDays"
               @update:travelDates="setTravelDates"
             />
-            <div class="mt-3">
-              <span class="form-text"
-                >Tip! You can select or deselect additional days.</span
-              >
-            </div>
           </div>
         </div>
         <div class="col-lg-8">
           <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-5">
               <TravelDays @update:TravelDays="setTravelDays" />
             </div>
-            <div class="col-md-6">
+            <div class="col-md-7">
+              <div class="input-group mb-3">
+                <label class="form-label" for="distance"
+                  >Afstand huis - kantoor</label
+                >
+                <div class="input-group">
+                  <input
+                    id="distance"
+                    class="form-control"
+                    type="number"
+                    v-model="distance"
+                  />
+                  <span class="input-group-text">km</span>
+                </div>
+                <span class="form-text"
+                  >Enkele reis dus! We verdubbelen het later.</span
+                >
+              </div>
               <div class="mb-3">
                 <label class="form-label" for="allowance"
-                  >Allowance per km</label
+                  >Vergoeding per km</label
                 >
                 <div class="input-group">
                   <span class="input-group-text">€</span>
@@ -112,20 +130,6 @@ const exportToCsv = () => {
                   />
                 </div>
               </div>
-              <div class="input-group mb-3">
-                <label class="form-label" for="distance"
-                  >Distance (one way)</label
-                >
-                <div class="input-group">
-                  <input
-                    id="distance"
-                    class="form-control"
-                    type="number"
-                    v-model="distance"
-                  />
-                  <span class="input-group-text">km</span>
-                </div>
-              </div>
             </div>
           </div>
           <div class="col-12">
@@ -133,14 +137,14 @@ const exportToCsv = () => {
             <table class="table table-sm">
               <thead>
                 <tr>
-                  <th>Date</th>
-                  <th class="text-end">Distance driven (km)</th>
-                  <th class="text-end">Allowance (€)</th>
+                  <th>Datum</th>
+                  <th class="text-end">Gereden afstand (km)</th>
+                  <th class="text-end">Vergoeding (€)</th>
                 </tr>
               </thead>
               <tfoot class="table-group-divider">
                 <tr>
-                  <td>{{ travelDates.length }} trips</td>
+                  <td>{{ travelDates.length }} dagen</td>
                   <td class="text-end">
                     {{ round(tripDistance * travelDates.length) }}
                   </td>
@@ -162,7 +166,7 @@ const exportToCsv = () => {
           </div>
           <div class="col-12 text-end">
             <button class="btn btn-primary" type="button" @click="exportToCsv">
-              Export to CSV
+              Exporteer naar CSV
             </button>
           </div>
         </div>
