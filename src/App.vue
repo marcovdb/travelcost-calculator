@@ -58,11 +58,11 @@ const exportToCsv = () => {
 
 <template>
   <div class="container py-4 px-3 mx-auto">
+    <h1>Travel cost calculator</h1>
     <form autocomplete="off">
-      <fieldset>
-        <legend>Date range</legend>
-        <div class="row">
-          <div class="col-6 mb-3">
+      <div class="row">
+        <div class="col-md-4">
+          <div class="mb-3">
             <label for="startdate" class="form-label">Start date</label>
             <input
               id="startdate"
@@ -71,7 +71,7 @@ const exportToCsv = () => {
               v-model="start"
             />
           </div>
-          <div class="col-6 mb-3">
+          <div class="mb-3">
             <label for="enddate" class="form-label">End date</label>
             <input
               id="enddate"
@@ -81,49 +81,53 @@ const exportToCsv = () => {
             />
           </div>
         </div>
-      </fieldset>
+        <div class="col-md-4">
+          <TravelDays @update:TravelDays="setTravelDays" />
+        </div>
+        <div class="col-md-4">
+          <div class="mb-3">
+            <label class="form-label" for="reimbursement"
+              >Reimbursement per km</label
+            >
+            <div class="input-group">
+              <span class="input-group-text">€</span>
+              <input
+                id="reimbursement"
+                class="form-control"
+                type="number"
+                v-model="reimbursement"
+              />
+            </div>
+          </div>
+          <div class="input-group mb-3">
+            <label class="form-label" for="distance">Distance (one way)</label>
+            <div class="input-group">
+              <input
+                id="distance"
+                class="form-control"
+                type="number"
+                v-model="distance"
+              />
+              <span class="input-group-text">km</span>
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="row">
-        <div class="col-4">
+        <div class="col-md-4 mt-3">
           <DatePicker
             :range="range"
             :travel-days="travelDays"
             @update:travelDates="setTravelDates"
           />
         </div>
-        <div class="col-4">
-          <TravelDays @update:TravelDays="setTravelDays" />
-        </div>
-        <div class="col-4">
-          <div class="mb-3">
-            <label class="form-label" for="reimbursement"
-              >Reimbursement per km</label
-            >
-            <input
-              id="reimbursement"
-              class="form-control"
-              type="number"
-              v-model="reimbursement"
-            />
-          </div>
-          <div class="mb-3">
-            <label class="form-label" for="distance">Distance (one way)</label>
-            <input
-              id="distance"
-              class="form-control"
-              type="number"
-              v-model="distance"
-            />
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-12">
+        <div class="col-md-8">
           <table class="table">
             <thead>
               <tr>
                 <th>Date</th>
-                <th class="text-end">Distance driven</th>
-                <th class="text-end">Amount to be reimbursed</th>
+                <th class="text-end">Distance driven (km)</th>
+                <th class="text-end">Amount to be reimbursed (€)</th>
               </tr>
             </thead>
             <tfoot class="table-group-divider">
