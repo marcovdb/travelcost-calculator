@@ -85,6 +85,11 @@ const exportToCsv = () => {
               :travel-days="travelDays"
               @update:travelDates="setTravelDates"
             />
+            <div class="mt-3">
+              <span class="form-text"
+                >Tip! You can select or deselect additional days.</span
+              >
+            </div>
           </div>
         </div>
         <div class="col-lg-8">
@@ -125,7 +130,7 @@ const exportToCsv = () => {
           </div>
           <div class="col-12">
             <hr />
-            <table class="table">
+            <table class="table table-sm">
               <thead>
                 <tr>
                   <th>Date</th>
