@@ -11,7 +11,6 @@ const options = {
   inline: true,
   defaultDate: [],
   onChange(selectedDates) {
-    console.log(selectedDates);
     emit("update:travelDates", selectedDates);
   },
 };
@@ -27,7 +26,6 @@ const setDays = () => {
       opts.defaultDate.push(date);
     }
   });
-  console.log(opts.defaultDate);
   emit("update:travelDates", opts.defaultDate);
   if (flatpickrInstance) {
     flatpickrInstance.destroy();
@@ -42,7 +40,7 @@ watch(() => props.travelDays, setDays);
 </script>
 
 <template>
-  <div class="mb-3">
+  <div>
     <span ref="picker"></span>
   </div>
 </template>
