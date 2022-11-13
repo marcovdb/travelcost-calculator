@@ -16,6 +16,9 @@ const travelDates = ref([]);
 const travelDays = ref([]);
 
 const range = computed(() => {
+  if (!start.value || !end.value) {
+    return [];
+  }
   const range = eachDayOfInterval({
     start: new Date(start.value),
     end: new Date(end.value),
