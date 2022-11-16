@@ -47,7 +47,7 @@ const exportToCsv = () => {
       ...travelDates.value.reduce((prevVal, date) => {
         prevVal.push({
           date,
-          distance: tripDistance.value,
+          distance: round(tripDistance.value),
           amount: round(tripDistance.value * allowance.value),
         });
         return prevVal;
