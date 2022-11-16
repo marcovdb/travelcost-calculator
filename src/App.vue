@@ -169,7 +169,7 @@ const exportToCsv = () => {
               <tbody class="table-group-divider">
                 <tr v-for="date in travelDates" :key="date.toString()">
                   <td>{{ date }}</td>
-                  <td class="text-end">{{ tripDistance }}</td>
+                  <td class="text-end">{{ round(tripDistance) }}</td>
                   <td class="text-end">
                     {{ round(tripDistance * allowance) }}
                   </td>
