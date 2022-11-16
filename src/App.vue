@@ -38,18 +38,28 @@ const setTravelDates = (payload) => {
   );
 };
 
-const round = (input) => Math.round(input * 100) / 100;
+const round = (input) => (Math.round(input * 100) / 100).toLocaleString();
 
 const exportToCsv = () => {
+  const tripCount = travelDates.value.length;
   const csv = Papa.unparse(
-    travelDates.value.reduce((prevVal, date) => {
-      prevVal.push({
-        date,
-        distance: tripDistance.value,
-        amount: round(tripDistance.value * allowance.value),
-      });
-      return prevVal;
-    }, []),
+    [
+      ...travelDates.value.reduce((prevVal, date) => {
+        prevVal.push({
+          date,
+          distance: tripDistance.value,
+          amount: round(tripDistance.value * allowance.value),
+        });
+        return prevVal;
+      }, []),
+      ...[
+        {
+          date: "TOTAAL",
+          distance: `=SUM(B2:B${tripCount + 1})`,
+          amount: `=SUM(C2:C${tripCount + 1})`,
+        },
+      ],
+    ],
     { delimiter: ";" }
   );
 
